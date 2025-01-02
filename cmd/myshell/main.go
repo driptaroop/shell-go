@@ -56,6 +56,19 @@ func builtinDefinition() map[string]func(string) {
 			if _, ok := commands[command]; ok {
 				fmt.Printf("%s is a shell builtin\n", command)
 			} else {
+				paths := strings.Split(os.Getenv("PATH"), ":")
+				for _, path := range paths {
+					dir, err := os.ReadDir(path)
+					if err != nil {
+						return
+					}
+					for _, file := range dir {
+						if file.Name() == command {
+							fmt.Printf("%s is %s/%s\n", command, path, command)
+							return
+						}
+					}
+				}
 				fmt.Printf("%s: not found\n", command)
 			}
 		},
