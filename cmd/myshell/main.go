@@ -10,17 +10,10 @@ import (
 
 // Ensures gofmt doesn't remove the "fmt" import in stage 1 (feel free to remove this!)
 var _ = fmt.Fprint
-var commands = map[string]func(string){
-	"exit": func(exitCode string) {
-		code, _ := strconv.Atoi(exitCode)
-		os.Exit(code)
-	},
-	"echo": func(message string) {
-		fmt.Println(message)
-	},
-}
+var commands map[string]func(string)
 
 func main() {
+	commands = builtinDefinition()
 	for {
 		commandInput()
 	}
@@ -39,8 +32,7 @@ func validateCommand(command string) {
 	//get all except the first word in command
 	command, argument, _ := strings.Cut(command, " ")
 
-	f, ok := commands[command]
-	if ok {
+	if f, ok := commands[command]; ok {
 		evaluateCommand(f, argument)
 	} else {
 		fmt.Fprintf(os.Stdout, "%s: command not found\n", command)
@@ -49,4 +41,23 @@ func validateCommand(command string) {
 
 func evaluateCommand(f func(string), argument string) {
 	f(argument)
+}
+
+func builtinDefinition() map[string]func(string) {
+	return map[string]func(string){
+		"exit": func(exitCode string) {
+			code, _ := strconv.Atoi(exitCode)
+			os.Exit(code)
+		},
+		"echo": func(message string) {
+			fmt.Println(message)
+		},
+		"type": func(command string) {
+			if _, ok := commands[command]; ok {
+				fmt.Printf("%s is a shell builtin\n", command)
+			} else {
+				fmt.Printf("%s: not found\n", command)
+			}
+		},
+	}
 }
