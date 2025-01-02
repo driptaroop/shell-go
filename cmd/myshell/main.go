@@ -4,11 +4,21 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
 // Ensures gofmt doesn't remove the "fmt" import in stage 1 (feel free to remove this!)
 var _ = fmt.Fprint
+var commands = map[string]func(string){
+	"exit": func(exitCode string) {
+		code, _ := strconv.Atoi(exitCode)
+		os.Exit(code)
+	},
+	"echo": func(message string) {
+		fmt.Println(message)
+	},
+}
 
 func main() {
 	for {
@@ -26,31 +36,17 @@ func commandInput() {
 }
 
 func validateCommand(command string) {
-	// create an array of commands
-	commands := []string{"exit 0"}
+	//get all except the first word in command
+	command, argument, _ := strings.Cut(command, " ")
 
-	// check if string is present in an array
-	if contains(commands, command) {
-		evaluateCommand(command)
+	f, ok := commands[command]
+	if ok {
+		evaluateCommand(f, argument)
 	} else {
 		fmt.Fprintf(os.Stdout, "%s: command not found\n", command)
 	}
 }
 
-func evaluateCommand(command string) {
-	switch command {
-	case "exit 0":
-		os.Exit(0)
-	default:
-		fmt.Fprintf(os.Stdout, "Command found")
-	}
-}
-
-func contains(arr []string, str string) bool {
-	for _, s := range arr {
-		if s == str {
-			return true
-		}
-	}
-	return false
+func evaluateCommand(f func(string), argument string) {
+	f(argument)
 }
