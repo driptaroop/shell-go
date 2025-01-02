@@ -58,10 +58,7 @@ func builtinDefinition() map[string]func(string) {
 			} else {
 				paths := strings.Split(os.Getenv("PATH"), ":")
 				for _, path := range paths {
-					dir, err := os.ReadDir(path)
-					if err != nil {
-						return
-					}
+					dir, _ := os.ReadDir(path)
 					for _, file := range dir {
 						if file.Name() == command {
 							fmt.Printf("%s is %s/%s\n", command, path, command)
