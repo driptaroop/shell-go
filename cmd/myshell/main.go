@@ -64,6 +64,10 @@ func builtinDefinition() map[string]func(string) {
 		"echo": func(message string) {
 			fmt.Println(message)
 		},
+		"pwd": func(_ string) {
+			dir, _ := os.Getwd()
+			fmt.Println(dir)
+		},
 		"type": func(command string) {
 			if _, ok := commands[command]; ok {
 				fmt.Printf("%s is a shell builtin\n", command)
