@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
 	"strconv"
 	"strings"
 )
@@ -35,6 +36,17 @@ func validateCommand(command string) {
 	if f, ok := commands[command]; ok {
 		evaluateCommand(f, argument)
 	} else {
+		paths := strings.Split(os.Getenv("PATH"), ":")
+		for _, path := range paths {
+			dir, _ := os.ReadDir(path)
+			for _, file := range dir {
+				if file.Name() == command {
+					output, _ := exec.Command(command, argument).Output()
+					fmt.Fprintf(os.Stdout, "%s", output)
+					return
+				}
+			}
+		}
 		fmt.Fprintf(os.Stdout, "%s: command not found\n", command)
 	}
 }
