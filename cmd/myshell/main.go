@@ -11,13 +11,21 @@ import (
 var _ = fmt.Fprint
 
 func main() {
-	// Uncomment this block to pass the first stage
+	for {
+		commandInput()
+	}
+}
+
+func commandInput() {
 	fmt.Fprint(os.Stdout, "$ ")
 
 	// Wait for user input
 	command, _ := bufio.NewReader(os.Stdin).ReadString('\n')
 	command = strings.TrimSpace(command)
+	evaluateCommand(command)
+}
 
+func evaluateCommand(command string) {
 	// create an array of commands
 	commands := []string{}
 
