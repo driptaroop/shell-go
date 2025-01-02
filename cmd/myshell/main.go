@@ -22,18 +22,27 @@ func commandInput() {
 	// Wait for user input
 	command, _ := bufio.NewReader(os.Stdin).ReadString('\n')
 	command = strings.TrimSpace(command)
-	evaluateCommand(command)
+	validateCommand(command)
 }
 
-func evaluateCommand(command string) {
+func validateCommand(command string) {
 	// create an array of commands
-	commands := []string{}
+	commands := []string{"exit 0"}
 
 	// check if string is present in an array
 	if contains(commands, command) {
-		fmt.Fprintf(os.Stdout, "Command found")
+		evaluateCommand(command)
 	} else {
 		fmt.Fprintf(os.Stdout, "%s: command not found\n", command)
+	}
+}
+
+func evaluateCommand(command string) {
+	switch command {
+	case "exit 0":
+		os.Exit(0)
+	default:
+		fmt.Fprintf(os.Stdout, "Command found")
 	}
 }
 
