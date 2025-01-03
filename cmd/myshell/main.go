@@ -32,9 +32,7 @@ func commandInput() {
 func validateCommand(command string) {
 	//get all except the first word in command
 	command, argument, _ := strings.Cut(command, " ")
-	fmt.Printf("arg: %s\n", argument)
 	arguments := preprocessArguments(argument)
-	fmt.Printf("arg: %s\n", arguments)
 
 	if f, ok := commands[command]; ok {
 		evaluateCommand(f, arguments)
