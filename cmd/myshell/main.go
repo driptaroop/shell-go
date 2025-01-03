@@ -62,6 +62,7 @@ func builtinDefinition() map[string]func(string) {
 			os.Exit(code)
 		},
 		"echo": func(message string) {
+			message = strings.Trim(message, "'")
 			fmt.Println(message)
 		},
 		"pwd": func(_ string) {
