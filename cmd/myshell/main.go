@@ -85,5 +85,8 @@ func builtinDefinition() map[string]func(string) {
 				fmt.Printf("%s: not found\n", command)
 			}
 		},
+		"cd": func(path string) {
+			os.Chdir(path)
+		},
 	}
 }
