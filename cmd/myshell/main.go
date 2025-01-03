@@ -86,6 +86,8 @@ func builtinDefinition() map[string]func(string) {
 			}
 		},
 		"cd": func(path string) {
+			currentUser, _ := os.UserHomeDir()
+			path = strings.ReplaceAll(path, "~", currentUser)
 			err := os.Chdir(path)
 			if err != nil {
 				fmt.Printf("cd: %s: No such file or directory\n", path)
