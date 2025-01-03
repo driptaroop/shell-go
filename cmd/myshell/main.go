@@ -32,6 +32,7 @@ func commandInput() {
 func validateCommand(command string) {
 	//get all except the first word in command
 	command, argument, _ := strings.Cut(command, " ")
+	argument = preprocessArguments(argument)
 
 	if f, ok := commands[command]; ok {
 		evaluateCommand(f, argument)
@@ -62,7 +63,6 @@ func builtinDefinition() map[string]func(string) {
 			os.Exit(code)
 		},
 		"echo": func(message string) {
-			message = strings.Trim(message, "'")
 			fmt.Println(message)
 		},
 		"pwd": func(_ string) {
@@ -94,5 +94,16 @@ func builtinDefinition() map[string]func(string) {
 				fmt.Printf("cd: %s: No such file or directory\n", path)
 			}
 		},
+	}
+}
+
+func preprocessArguments(arg string) string {
+	startesWithSingleQuote := strings.HasPrefix(arg, "'")
+	endsWithSingleQuote := strings.HasSuffix(arg, "'")
+	if startesWithSingleQuote && endsWithSingleQuote {
+		return strings.Trim(arg, "'")
+	} else {
+		fields := strings.Fields(arg)
+		return strings.Join(fields, " ")
 	}
 }
