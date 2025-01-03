@@ -86,7 +86,10 @@ func builtinDefinition() map[string]func(string) {
 			}
 		},
 		"cd": func(path string) {
-			os.Chdir(path)
+			err := os.Chdir(path)
+			if err != nil {
+				fmt.Printf("cd: %s: No such file or directory\n", path)
+			}
 		},
 	}
 }
