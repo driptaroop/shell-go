@@ -51,6 +51,6 @@ func validateCommand(command string) {
 	}
 }
 
-func evaluateCommand(f func([]string), arguments []string) {
-	f(arguments)
+func evaluateCommand(fn func([]string), arguments []string) {
+	fn(arguments)
 }
