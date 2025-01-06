@@ -33,6 +33,8 @@ func processDoubleQuote(arg string) []string {
 			} else {
 				inQuote = true
 			}
+		} else if inQuote == false && r == ' ' {
+
 		} else {
 			field += string(r)
 		}
