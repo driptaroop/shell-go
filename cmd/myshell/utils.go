@@ -20,11 +20,21 @@ func PreprocessArguments(arg string) []string {
 }
 
 func processDoubleQuote(arg string) []string {
-	arg = strings.Trim(arg, "\"")
-	fields := strings.Fields(arg)
-	for i, field := range fields {
-		if strings.Contains(field, " ") {
-			fields[i] = strings.ReplaceAll(field, " ", "")
+	// travserse the string and tokenize it with double quotes as delimiter
+	fields := make([]string, 0)
+	var field string
+	var inQuote bool
+	for _, r := range arg {
+		if r == '"' {
+			if inQuote {
+				fields = append(fields, field)
+				field = ""
+				inQuote = false
+			} else {
+				inQuote = true
+			}
+		} else {
+			field += string(r)
 		}
 	}
 	return fields
