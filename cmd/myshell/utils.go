@@ -10,7 +10,7 @@ func PreprocessArguments(arg string) []string {
 	startsWithDDoubleQuote := strings.HasPrefix(arg, "\"")
 	endsWithDoubleQuote := strings.HasSuffix(arg, "\"")
 	if startsWithSingleQuote && endsWithSingleQuote {
-		arg = strings.Trim(arg, "'")
+		arg = strings.Trim(strings.ReplaceAll(arg, "''", ""), "'")
 		return strings.Split(arg, "' '")
 	} else if startsWithDDoubleQuote && endsWithDoubleQuote {
 		fields := processDoubleQuote(arg)
