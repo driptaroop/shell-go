@@ -23,7 +23,7 @@ func processDoubleQuote(arg string) []string {
 	// travserse the string and tokenize it with double quotes as delimiter
 	var field = ""
 	var inQuote bool
-	for _, r := range arg {
+	for i, r := range arg {
 		if r == '"' {
 			if inQuote {
 				inQuote = false
@@ -31,6 +31,9 @@ func processDoubleQuote(arg string) []string {
 				inQuote = true
 			}
 		} else {
+			if inQuote == false && r == ' ' && arg[i-1] == ' ' {
+				continue
+			}
 			field += string(r)
 		}
 	}
