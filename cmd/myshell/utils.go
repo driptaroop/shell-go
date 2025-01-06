@@ -11,14 +11,21 @@ func PreprocessArguments(arg string) []string {
 		arg = strings.Trim(arg, "'")
 		return strings.Split(arg, "' '")
 	} else if startsWithDDoubleQuote && endsWithDoubleQuote {
-		fields := strings.Fields(arg)
-		// Remove the double quotes from the fields
-		for i, field := range fields {
-			fields[i] = strings.Trim(field, "\"")
-		}
+		fields := processDoubleQuote(arg)
 		return fields
 	} else {
 		fields := strings.Fields(arg)
 		return fields
 	}
+}
+
+func processDoubleQuote(arg string) []string {
+	arg = strings.Trim(arg, "\"")
+	fields := strings.Fields(arg)
+	for i, field := range fields {
+		if strings.Contains(field, " ") {
+			fields[i] = strings.ReplaceAll(field, " ", "")
+		}
+	}
+	return fields
 }
