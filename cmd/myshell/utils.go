@@ -21,23 +21,18 @@ func PreprocessArguments(arg string) []string {
 
 func processDoubleQuote(arg string) []string {
 	// travserse the string and tokenize it with double quotes as delimiter
-	fields := make([]string, 0)
-	var field string
+	var field = ""
 	var inQuote bool
 	for _, r := range arg {
 		if r == '"' {
 			if inQuote {
-				fields = append(fields, field)
-				field = ""
 				inQuote = false
 			} else {
 				inQuote = true
 			}
-		} else if inQuote == false && r == ' ' {
-
 		} else {
 			field += string(r)
 		}
 	}
-	return fields
+	return []string{field}
 }
