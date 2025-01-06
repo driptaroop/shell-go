@@ -1,6 +1,9 @@
 package main
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 func PreprocessArguments(arg string) []string {
 	startsWithSingleQuote := strings.HasPrefix(arg, "'")
@@ -22,6 +25,7 @@ func PreprocessArguments(arg string) []string {
 func processDoubleQuote(arg string) []string {
 	// traverse the string and tokenize it with double quotes as delimiter
 	arg = strings.ReplaceAll(arg, "\"\"", "")
+	fmt.Printf("arg: %s\n", arg)
 	fields := make([]string, 0)
 	var field string
 	var inQuote bool
@@ -30,8 +34,11 @@ func processDoubleQuote(arg string) []string {
 			if inQuote {
 				fields = append(fields, field)
 				field = ""
+				inQuote = false
+			} else {
+				inQuote = true
+				field = ""
 			}
-			inQuote = !inQuote
 		} else {
 			field += string(r)
 		}
