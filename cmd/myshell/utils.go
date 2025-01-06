@@ -21,6 +21,7 @@ func PreprocessArguments(arg string) []string {
 
 func processDoubleQuote(arg string) []string {
 	// traverse the string and tokenize it with double quotes as delimiter
+	arg = strings.ReplaceAll(arg, "\"\"", "")
 	fields := make([]string, 0)
 	var field string
 	var inQuote bool
