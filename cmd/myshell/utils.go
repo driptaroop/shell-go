@@ -32,12 +32,9 @@ func processDoubleQuote(arg string) []string {
 		if r == '"' {
 			if inQuote {
 				fields = append(fields, field)
-				field = ""
-				inQuote = false
-			} else {
-				inQuote = true
-				field = ""
 			}
+			field = ""
+			inQuote = !inQuote
 		} else {
 			field += string(r)
 		}
